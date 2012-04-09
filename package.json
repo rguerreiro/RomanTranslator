@@ -1,10 +1,14 @@
 {
-    "name": "romantranslator",
+    "name": "roman-translator",
     "version": "0.1.0",
+    "engines": {
+        "node": "0.6.14",
+        "npm":  "1.1.9"
+    },
     "private": false,
     "dependencies": {
         "express": "2.5.8",
-        "consolidate": ">= 0.2.0",
-        "hogan.js": ">= 2.0.0"
+        "consolidate": "0.2.0",
+        "hogan.js": "2.0.0"
     }
 }
