@@ -3,11 +3,96 @@
 <head>
     <title>{{title}}</title>
     <link type='text/css' rel='stylesheet' href='/css/bootstrap.css' />
-    
     <script type='text/javascript' src='/js/jquery.min.js'></script>
     <script type='text/javascript' src='/js/bootstrap.js'></script>
 </head>
 <body>
-    <h1>{{title}}</h1>
+    <div class='container'>
+        <header class='jumbotron subhead'>
+            <h1>{{title}}</h1>
+            <p class='lead'>This is a simple roman number translator using node.js as backend</p>
+        </header>
+        <section id='global'>
+            <div class='row'>
+                <div class='span6'>
+                    <h3>To Roman numbers</h3>
+                    <form class="form-horizontal">
+                        <input type='text' id='decimal' placeholder='from decimal...'>
+                        <button id="btnFromDecimal" class='btn'><i class='icon-cog'></i>Translate</button>
+                        <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
+                    </form> 
+                    <div id='roman-result'></div>
+                </div>
+                <div class='span6'>
+                    <h3>From Roman numbers</h3>
+                    <form class="form-horizontal">
+                        <input type='text' id='roman' placeholder='to decimal...'>
+                        <button id="btnToDecimal" class='btn'><i class='icon-cog'></i>Translate</button>
+                        <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
+                    </form>
+                    <div id='decimal-result'></div>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script type='text/javascript' language='javascript'>
+        var toggle_translation = function(btn) {
+            var indicator = $(btn).siblings('.ajax-indicator:first');
+            var textbox = $(btn).siblings('input[type="text"]:first');
+            if (indicator.is(':visible')) {
+                indicator.hide();
+                textbox.removeAttr("disabled");
+                $(btn).removeAttr("disabled");
+            } else {
+                indicator.show();
+                textbox.attr("disabled", "disabled");
+                $(btn).attr("disabled", "disabled");
+            }
+        };
+        $(function() {
+            $('#btnFromDecimal').on('click', function() {
+                var btn = this;
+                var decimal = $('#decimal').val();
+                $('#roman-result').html('');
+                toggle_translation(btn);
+                $.ajax({
+                    type: 'POST',
+                    url: "fromDecimal",
+                    data: { number: decimal },
+                    error: function (xhr, status, error) {
+                        toggle_translation(btn);
+                        alert(error);
+                    },
+                    success: function (data, status, xhr) {
+                        toggle_translation(btn);
+                        $('#roman-result').html('<strong>' + decimal + ' = ' + data + '</strong>');
+                        $('#decimal').val('');
+                    }
+                });
+                return false;
+            });
+            $('#btnToDecimal').on('click', function() {
+                var btn = this;
+                var roman = $('#roman').val();
+                $('#decimal-result').html('');
+                toggle_translation(btn);
+                $.ajax({
+                    type: 'POST',
+                    url: "toDecimal",
+                    data: { number: roman },
+                    error: function (xhr, status, error) {
+                        toggle_translation(btn);
+                        alert(error);
+                    },
+                    success: function (data, status, xhr) {
+                        toggle_translation(btn);
+                        $('#decimal-result').html('<strong>' + roman + ' = ' + data + '</strong>');
+                        $('#roman').val('');
+                    }
+                });
+                return false;
+            });
+        });
+    </script>
 </body>
 </html>

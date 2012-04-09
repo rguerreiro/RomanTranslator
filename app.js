@@ -35,6 +35,8 @@ app.configure('production', function(){
 
 // Routes
 app.get('/', routes.index);
+app.post('/toDecimal', routes.toDecimal);
+app.post('/fromDecimal', routes.fromDecimal);
 
 app.listen(process.env.PORT);
 console.log("Express server listening on port %d in %s mode", process.env.PORT, app.settings.env);
