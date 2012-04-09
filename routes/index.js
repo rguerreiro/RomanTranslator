@@ -6,14 +6,23 @@ exports.index = function(req, res) {
 
 exports.toDecimal = function(req, res) {
     console.log('received:' + req.body.number);
-    var decimal = translator.toDecimal(req.body.number);
-    console.log('sending:' + decimal);
-    res.send(decimal.toString());
+    try {
+        var decimal = translator.toDecimal(req.body.number);
+        console.log('sending:' + decimal);
+        res.send(decimal.toString());
+    } catch (err) {
+        res.send(err);
+    }
 };
 
 exports.fromDecimal = function(req, res) {
     console.log('received:' + req.body.number);
-    var roman = translator.toRoman(req.body.number);
-    console.log('sending:' + roman);
-    res.send(roman.toString());
+    try
+    {
+        var roman = translator.toRoman(req.body.number);
+        console.log('sending:' + roman);
+        res.send(roman.toString());
+    } catch (err) {
+        res.send(err);
+    }
 };
