@@ -35,4 +35,11 @@ exports["invalid character"] = function(test){
     test.done();
 };
 
+exports["invalid character at the end"] = function(test){
+    test.throws(function() {
+        translator.toDecimal('MMXXIIA');
+    }, /Character 'A' in position 6 isn't a valid one/);
+    test.done();
+};
+
 base.run_test(__filename);
