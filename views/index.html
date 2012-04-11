@@ -8,40 +8,45 @@
     <script type='text/javascript' src='/js/bootstrap.js'></script>
 </head>
 <body>
-    <div class='container'>
-        <header class='page-header'>
-            <h1>
-                {{title}}
-                <small>This is a simple roman number translator using node.js as backend</small>
-            </h1>
-        </header>
-        <section id='global'>
-            <div class='row'>
-                <div class='span6'>
-                    <h3>To Roman numbers</h3>
-                    <form class="form-horizontal">
-                        <input type='text' id='decimal' placeholder='from decimal...'>
-                        <button id="btnFromDecimal" class='btn'><i class='icon-cog'></i>Translate</button>
-                        <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
-                    </form> 
-                    <div id='roman-result'></div>
+    <div class='wrapper'>
+        <div class='container'>
+            <header class='page-header'>
+                <h1>
+                    {{title}}
+                    <small>This is a simple roman number translator using node.js as backend</small>
+                </h1>
+            </header>
+            <section id='main'>
+                <div class='row'>
+                    <div class='span6'>
+                        <h3>To Roman numbers</h3>
+                        <form class="form-horizontal">
+                            <input type='text' id='decimal' placeholder='from decimal...'>
+                            <button id="btnFromDecimal" class='btn'><i class='icon-cog'></i>Translate</button>
+                            <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
+                        </form> 
+                        <div id='roman-result'></div>
+                    </div>
+                    <div class='span6'>
+                        <h3>From Roman numbers</h3>
+                        <form class="form-horizontal">
+                            <input type='text' id='roman' placeholder='to decimal...'>
+                            <button id="btnToDecimal" class='btn'><i class='icon-cog'></i>Translate</button>
+                            <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
+                        </form>
+                        <div id='decimal-result'></div>
+                    </div>
                 </div>
-                <div class='span6'>
-                    <h3>From Roman numbers</h3>
-                    <form class="form-horizontal">
-                        <input type='text' id='roman' placeholder='to decimal...'>
-                        <button id="btnToDecimal" class='btn'><i class='icon-cog'></i>Translate</button>
-                        <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
-                    </form>
-                    <div id='decimal-result'></div>
-                </div>
-            </div>
-        </section>
-        <footer class='footer'>
-            <p>Developed by <a href='https://twitter.com/#!/rguerreiro'>@rguerreiro</a> with the sole purpose to sharpen his node.js skills.</p>
-            <p>Version: {{version}}</p>
-        </footer>
+            </section>
+            <div class="push"></div>
+        </div>
     </div>
+    <footer>
+        <div class='container footer'>
+            <p class='pull-right'>v{{version}}</p>
+            <p>Developed by <a href='https://twitter.com/#!/rguerreiro'>@rguerreiro</a> with the sole purpose to sharpen his node.js skills.</p>
+        </div>
+    </footer>
     <script type='text/javascript' language='javascript'>
         var toggle_translation = function(btn) {
             var indicator = $(btn).siblings('.ajax-indicator:first');
@@ -60,19 +65,22 @@
             $('#btnFromDecimal').on('click', function() {
                 var btn = this;
                 var decimal = $('#decimal').val();
-                $('#roman-result').html('');
+                $('#roman-result').html('').removeAttr('class');
+                if(!decimal) return false;
+                
                 toggle_translation(btn);
                 $.ajax({
                     type: 'POST',
                     url: "fromDecimal",
                     data: { number: decimal },
                     error: function (xhr, status, error) {
+                        $('#roman-result').addClass("alert alert-error");
+                        $('#roman-result').html('<strong>Error!</strong> ' + xhr.responseText + '.');
                         toggle_translation(btn);
-                        alert(error);
                     },
                     success: function (data, status, xhr) {
                         toggle_translation(btn);
-                        $('#roman-result').html('<strong>' + decimal + ' = ' + data + '</strong>');
+                        $('#roman-result').html('<strong>' + decimal + '</strong> = ' + data).addClass("alert alert-success");
                         $('#decimal').val('');
                     }
                 });
@@ -81,19 +89,22 @@
             $('#btnToDecimal').on('click', function() {
                 var btn = this;
                 var roman = $('#roman').val();
-                $('#decimal-result').html('');
+                $('#decimal-result').html('').removeAttr('class');
+                if(!roman) return false;
+                
                 toggle_translation(btn);
                 $.ajax({
                     type: 'POST',
                     url: "toDecimal",
                     data: { number: roman },
                     error: function (xhr, status, error) {
+                        $('#decimal-result').addClass("alert alert-error");
+                        $('#decimal-result').html('<strong>Error!</strong> ' + xhr.responseText + '.');
                         toggle_translation(btn);
-                        alert(error);
                     },
                     success: function (data, status, xhr) {
                         toggle_translation(btn);
-                        $('#decimal-result').html('<strong>' + roman + ' = ' + data + '</strong>');
+                        $('#decimal-result').html('<strong>' + roman + '</strong> = ' + data).addClass("alert alert-success");
                         $('#roman').val('');
                     }
                 });

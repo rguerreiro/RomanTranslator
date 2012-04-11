@@ -1,5 +1,18 @@
+html, body { height: 100%; }
+
+.wrapper {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -60px;
+}
+
+.footer, .push {
+    height: 50px;
+    clear: both;
+}
+
 .footer {
-    margin-top: 45px;
-    padding: 35px 0 36px;
+    padding-top: 9px;
     border-top: 1px solid #E5E5E5;
 }

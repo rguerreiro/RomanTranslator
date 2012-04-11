@@ -6,6 +6,20 @@ exports["translator initialization"] = function(test){
     test.done();
 };
 
+exports["empty roman number"] = function(test) {
+    test.throws(function() {
+        translator.toDecimal('');
+    }, /Empty string/);
+    test.done();
+};
+
+exports["null roman number"] = function(test) {
+    test.throws(function() {
+        translator.toDecimal(null);
+    }, /Empty string/);
+    test.done();
+};
+
 exports["lowest roman number"] = function(test){
     test.equal(translator.toDecimal('I'), 1);
     test.done();
@@ -118,14 +132,14 @@ exports["more than max allowed I"] = function(test) {
 exports["invalid character"] = function(test){
     test.throws(function() {
         translator.toDecimal('A');
-    }, /Character 'A' in position 0 isn't a valid one/);
+    }, /Character 'A' in position 1 isn't a valid one/);
     test.done();
 };
 
 exports["invalid character at the end"] = function(test){
     test.throws(function() {
         translator.toDecimal('MMXXIIA');
-    }, /Character 'A' in position 6 isn't a valid one/);
+    }, /Character 'A' in position 7 isn't a valid one/);
     test.done();
 };
 

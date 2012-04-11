@@ -13,7 +13,7 @@ exports.toDecimal = function(req, res) {
         res.send(decimal.toString());
     } catch (err) {
         console.log('error:' + err.message);
-        res.send(err.message);
+        res.send(err.message, 500);
     }
 };
 
@@ -26,6 +26,6 @@ exports.fromDecimal = function(req, res) {
         res.send(roman.toString());
     } catch (err) {
         console.log('error:' + err.message);
-        res.send(err.message);
+        res.send(err.message, 500);
     }
 };
