@@ -21,10 +21,97 @@ exports["using all roman numbers once"] = function(test){
     test.done();
 };
 
-exports["higher than 3888"] = function(test){
+exports["lowered roman numbers"] = function(test){
+    test.equal(translator.toDecimal('mdclxvi'), 1666);
+    test.done();
+};
+
+exports["mixed case roman numbers"] = function(test){
+    test.equal(translator.toDecimal('MDclxVI'), 1666);
+    test.done();
+};
+
+exports["max allowed M"] = function(test) {
+    test.equal(translator.toDecimal('MMM'), 3000);
+    test.done();
+};
+
+exports["more than max allowed M"] = function(test) {
     test.throws(function() {
         translator.toDecimal('MMMM');
-    }, /Regular roman numbers can only go a maximum of 3888 or MMMDCCCLXXXVIII/);
+    }, /The character 'M' can only be used a maximum of 3 time\(s\)/);
+    test.done();
+};
+
+exports["max allowed D"] = function(test) {
+    test.equal(translator.toDecimal('D'), 500);
+    test.done();
+};
+
+exports["more than max allowed D"] = function(test) {
+    test.throws(function() {
+        translator.toDecimal('DD');
+    }, /The character 'D' can only be used a maximum of 1 time\(s\)/);
+    test.done();
+};
+
+exports["max allowed C"] = function(test) {
+    test.equal(translator.toDecimal('CCC'), 300);
+    test.done();
+};
+
+exports["more than max allowed C"] = function(test) {
+    test.throws(function() {
+        translator.toDecimal('CCCC');
+    }, /The character 'C' can only be used a maximum of 3 time\(s\)/);
+    test.done();
+};
+
+exports["max allowed L"] = function(test) {
+    test.equal(translator.toDecimal('L'), 50);
+    test.done();
+};
+
+exports["more than max allowed L"] = function(test) {
+    test.throws(function() {
+        translator.toDecimal('LL');
+    }, /The character 'L' can only be used a maximum of 1 time\(s\)/);
+    test.done();
+};
+
+exports["max allowed X"] = function(test) {
+    test.equal(translator.toDecimal('XXX'), 30);
+    test.done();
+};
+
+exports["more than max allowed X"] = function(test) {
+    test.throws(function() {
+        translator.toDecimal('XXXX');
+    }, /The character 'X' can only be used a maximum of 3 time\(s\)/);
+    test.done();
+};
+
+exports["max allowed V"] = function(test) {
+    test.equal(translator.toDecimal('V'), 5);
+    test.done();
+};
+
+exports["more than max allowed V"] = function(test) {
+    test.throws(function() {
+        translator.toDecimal('VV');
+    }, /The character 'V' can only be used a maximum of 1 time\(s\)/);
+    test.done();
+};
+
+exports["max allowed I"] = function(test) {
+    test.equal(translator.toDecimal('III'), 3);
+    test.done();
+};
+
+exports["more than max allowed I"] = function(test) {
+    test.throws(function() {
+        translator.toDecimal('IIII');
+    }, /The character 'I' can only be used a maximum of 3 time\(s\)/);
     test.done();
 };
 

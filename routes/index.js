@@ -1,7 +1,8 @@
-var translator = require('../lib/roman-translator.js');
+var translator = require('../lib/roman-translator.js'),
+    utils = require('../lib/utils.js');
 
 exports.index = function(req, res) {
-  res.render('index', { title: 'Roman Number Translator' })
+  res.render('index', { title: 'Roman Number Translator', version: utils.getVersion() })
 };
 
 exports.toDecimal = function(req, res) {
@@ -11,7 +12,8 @@ exports.toDecimal = function(req, res) {
         console.log('sending:' + decimal);
         res.send(decimal.toString());
     } catch (err) {
-        res.send(err);
+        console.log('error:' + err.message);
+        res.send(err.message);
     }
 };
 
@@ -23,6 +25,7 @@ exports.fromDecimal = function(req, res) {
         console.log('sending:' + roman);
         res.send(roman.toString());
     } catch (err) {
-        res.send(err);
+        console.log('error:' + err.message);
+        res.send(err.message);
     }
 };
