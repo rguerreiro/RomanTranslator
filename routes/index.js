@@ -2,7 +2,7 @@ var translator = require('../lib/roman-translator.js'),
     utils = require('../lib/utils.js');
 
 exports.index = function(req, res) {
-    res.render('index', { title: 'Roman Number Translator', version: utils.getVersion(), env: 'dev' })
+    res.render('index', { title: 'Roman Number Translator', version: utils.getVersion(), env: process.env.NODE_ENV })
 };
 
 exports.toDecimal = function(req, res) {
