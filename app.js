@@ -25,6 +25,16 @@ app.configure(function(){
     app.register('html', adapter.init(hogan)); // using this while express 3.x isn't released
 });
 
+// Error handling
+app.error(function(err, req, res, next) {
+    if (req.isXMLHttpRequest) {
+        console.log('error:' + err.message);
+        res.send(err.message, 500);
+    } else {
+        next(err);
+    }
+});
+
 app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });

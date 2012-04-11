@@ -1,3 +1,4 @@
+/* sticky footer taken from http://od-eon.com/blogs/calvin/flush-footer-css-bottom-page/ */
 html, body { height: 100%; }
 
 .wrapper {

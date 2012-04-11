@@ -7,25 +7,14 @@ exports.index = function(req, res) {
 
 exports.toDecimal = function(req, res) {
     console.log('received:' + req.body.number);
-    try {
-        var decimal = translator.toDecimal(req.body.number);
-        console.log('sending:' + decimal);
-        res.send(decimal.toString());
-    } catch (err) {
-        console.log('error:' + err.message);
-        res.send(err.message, 500);
-    }
+    var decimal = translator.toDecimal(req.body.number);
+    console.log('sending:' + decimal);
+    res.send(decimal.toString());
 };
 
 exports.fromDecimal = function(req, res) {
     console.log('received:' + req.body.number);
-    try
-    {
-        var roman = translator.toRoman(req.body.number);
-        console.log('sending:' + roman);
-        res.send(roman.toString());
-    } catch (err) {
-        console.log('error:' + err.message);
-        res.send(err.message, 500);
-    }
+    var roman = translator.toRoman(req.body.number);
+    console.log('sending:' + roman);
+    res.send(roman.toString());
 };
