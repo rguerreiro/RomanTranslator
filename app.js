@@ -31,7 +31,6 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
-    //app.use(express.errorHandler());
     app.error(function(err, req, res, next) {
         if (req.isXMLHttpRequest) {
             console.log('error in ajax req:' + err.message);
