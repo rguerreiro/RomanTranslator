@@ -3,7 +3,8 @@ var express = require('express'),
     //cons    = require('consolidate'), // use this instead when express 3.x gets out
     hogan   = require('hogan.js'),
     adapter = require('./lib/hogan-express.js'),
-    routes  = require('./routes');
+    routes  = require('./routes'),
+    utils   = require('./lib/utils.js');
 
 var app = module.exports = express.createServer();
 
@@ -41,6 +42,7 @@ app.configure('development', function(){
 
 app.configure('production', function(){
     app.use(function(req, res, next) {
+        console.log('reached PageNotFoundError use');
         next(new PageNotFoundError())
     });
     app.error(function(err, req, res, next) {
@@ -54,6 +56,9 @@ app.configure('production', function(){
             console.log('error:' + err.message);
             res.render('500', {
                 status: 500,
+                title: 'Roman Number Converter', 
+                version: utils.getVersion(), 
+                env: process.env.NODE_ENV || 'development',
                 error: util.inspect(err),
                 showDetails: app.settings.showErrorDetails
             });
