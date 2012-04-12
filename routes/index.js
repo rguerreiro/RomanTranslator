@@ -2,7 +2,11 @@ var translator = require('../lib/roman-translator.js'),
     utils = require('../lib/utils.js');
 
 exports.index = function(req, res) {
-    res.render('index', { title: 'Roman Number Converter', version: utils.getVersion(), env: process.env.NODE_ENV || 'development' })
+    res.render('index', { title: 'Roman Number Converter', version: utils.getVersion(), env: process.env.NODE_ENV || 'development' });
+};
+
+exports.throwError = function(req, res) {
+    throw new Error('This is an error');
 };
 
 exports.toDecimal = function(req, res) {

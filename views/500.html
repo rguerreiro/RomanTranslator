@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <link type='text/css' rel='stylesheet' href='/css/bootstrap.css' />
+    <link type='text/css' rel='stylesheet' href='/css/site.css' />
+    <script type='text/javascript' src='/js/jquery.min.js'></script>
+    <script type='text/javascript' src='/js/bootstrap.js'></script>
+    <!-- {{env}} -->
+</head>
+<body>
+    <div class='wrapper'>
+        <div class='container'>
+            <header class='page-header'>
+                <h1>
+                    {{title}}
+                    <small>This is a simple roman number converter using node.js as backend</small>
+                </h1>
+            </header>
+            <section id='main'>
+                <h3>Something went terribly wrong</h3>
+                <p>{{error}}</p>
+            </section>
+            <div class="push"></div>
+        </div>
+    </div>
+    <footer>
+        <div class='container footer'>
+            <p class='pull-right'><small>v{{version}}</small></p>
+            <p>Developed by <a href='https://twitter.com/#!/rguerreiro'>@rguerreiro</a> with the sole purpose to sharpen his node.js skills.</p>
+            <p><small>Favicon taken from <a href='http://www.famfamfam.com/lab/icons/silk/'>famfamfam</a>. Hosted at <a href='http://www.heroku.com/'>Heroku</a> and running on <a href='http://expressjs.com/'>express.js</a>.</small></p>
+        </div>
+    </footer>
+    <a href="http://github.com/rguerreiro/romantranslator"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
+</body>
+</html>

@@ -1,10 +1,19 @@
 var express = require('express'),
+    util    = require('util'),
     //cons    = require('consolidate'), // use this instead when express 3.x gets out
     hogan   = require('hogan.js'),
     adapter = require('./lib/hogan-express.js'),
     routes  = require('./routes');
 
 var app = module.exports = express.createServer();
+
+function PageNotFoundError(message){
+    this.name = 'PageNotFoundError';
+    Error.call(this, message);
+    Error.captureStackTrace(this, arguments.callee);
+}
+
+PageNotFoundError.prototype.__proto__ = Error.prototype;
 
 // Configuration
 app.configure(function(){
@@ -13,7 +22,7 @@ app.configure(function(){
     
     // assign .html as the default extension
     app.set('view engine', 'html');
-    app.set('view options', { layout:false });
+    app.set('view options', { layout: false });
     app.set('views', __dirname + '/views');
     
     app.use(express.bodyParser());
@@ -31,19 +40,30 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
+    app.use(function(req, res, next) {
+        next(new PageNotFoundError())
+    });
     app.error(function(err, req, res, next) {
-        if (req.isXMLHttpRequest) {
+        if (typeof err === typeof PageNotFoundError) {
+            console.log('got a 404');
+            res.redirect('/');
+        } else if (req.isXMLHttpRequest) {
             console.log('error in ajax req:' + err.message);
             res.send(err.message, 500);
         } else {
             console.log('error:' + err.message);
-            next(err);
+            res.render('500', {
+                status: 500,
+                error: util.inspect(err),
+                showDetails: app.settings.showErrorDetails
+            });
         }
     });
 });
 
 // Routes
 app.get('/', routes.index);
+app.get('/throwError', routes.throwError);
 app.post('/toDecimal', routes.toDecimal);
 app.post('/fromDecimal', routes.fromDecimal);
 
