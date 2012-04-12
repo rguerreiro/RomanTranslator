@@ -58,7 +58,7 @@ app.configure('production', function(){
                 status: 500,
                 title: 'Roman Number Converter', 
                 version: utils.getVersion(), 
-                env: process.env.NODE_ENV || 'development',
+                env: utils.getEnv(),
                 error: util.inspect(err),
                 showDetails: app.settings.showErrorDetails
             });
