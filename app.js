@@ -26,22 +26,21 @@ app.configure(function(){
 });
 
 // Error handling
-app.error(function(err, req, res, next) {
-    if (req.isXMLHttpRequest) {
-        console.log('error in ajax req:' + err.message);
-        res.send(err.message, 500);
-    } else {
-        console.log('error:' + err.message);
-        next(err);
-    }
-});
-
 app.configure('development', function(){
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
 });
 
 app.configure('production', function(){
-    app.use(express.errorHandler());
+    //app.use(express.errorHandler());
+    app.error(function(err, req, res, next) {
+        if (req.isXMLHttpRequest) {
+            console.log('error in ajax req:' + err.message);
+            res.send(err.message, 500);
+        } else {
+            console.log('error:' + err.message);
+            next(err);
+        }
+    });
 });
 
 // Routes
