@@ -46,7 +46,7 @@ app.configure('production', function(){
         next(new PageNotFoundError())
     });
     app.error(function(err, req, res, next) {
-        if (typeof err === typeof PageNotFoundError) {
+        if (err instanceof PageNotFoundError) {
             console.log('got a 404');
             res.redirect('/');
         } else if (req.isXMLHttpRequest) {
