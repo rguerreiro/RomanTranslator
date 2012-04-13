@@ -23,7 +23,7 @@ app.configure(function(){
     
     // assign .html as the default extension
     app.set('view engine', 'html');
-    app.set('view options', { layout: false });
+    app.set('view options', { layout: true });
     app.set('views', __dirname + '/views');
     
     app.use(express.bodyParser());
@@ -57,13 +57,30 @@ app.configure('production', function(){
             res.render('500', {
                 status: 500,
                 title: 'Roman Number Converter', 
-                version: utils.getVersion(), 
-                env: utils.getEnv(),
                 error: util.inspect(err),
                 showDetails: app.settings.showErrorDetails
             });
         }
     });
+});
+
+//app.helpers({
+//    renderScript: function(content){ return '<script type="text/javascript" language="javascript">' + content + '</script>' }
+//});
+
+app.dynamicHelpers({
+    env: function(req, res){
+        return utils.getEnv();
+    },
+    version: function(req, res){
+        return utils.getVersion();
+    },
+    script: function(req, res){
+        return function(content) { 
+            res.local('script_section', content);
+            return '';
+        };
+    }
 });
 
 // Routes

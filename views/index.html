@@ -1,101 +1,69 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{{title}}</title>
-    <link type='text/css' rel='stylesheet' href='/css/bootstrap.css' />
-    <link type='text/css' rel='stylesheet' href='/css/site.css' />
-    <script type='text/javascript' src='/js/jquery.min.js'></script>
-    <script type='text/javascript' src='/js/bootstrap.js'></script>
-    <!-- {{env}} -->
-</head>
-<body>
-    <div class='wrapper'>
-        <div class='container'>
-            <header class='page-header'>
-                <h1>
-                    {{title}}
-                    <small>This is a simple roman number converter using node.js as backend</small>
-                </h1>
-            </header>
-            <section id='main'>
-                <div class='row'>
-                    <div class='span6'>
-                        <h3>To Roman numbers</h3>
-                        <form class="form-horizontal">
-                            <input type='text' id='decimal' placeholder='from decimal...'>
-                            <button id="btnFromDecimal" class='btn'><i class='icon-cog'></i>Convert</button>
-                            <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
-                        </form> 
-                        <div id='roman-result'></div>
-                    </div>
-                    <div class='span6'>
-                        <h3>From Roman numbers</h3>
-                        <form class="form-horizontal">
-                            <input type='text' id='roman' placeholder='to decimal...'>
-                            <button id="btnToDecimal" class='btn'><i class='icon-cog'></i>Convert</button>
-                            <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
-                        </form>
-                        <div id='decimal-result'></div>
-                    </div>
-                </div>
-            </section>
-            <div class="push"></div>
-        </div>
+<div class='row'>
+    <div class='span6'>
+        <h3>To Roman numbers</h3>
+        <form class="form-horizontal">
+            <input type='text' id='decimal' placeholder='from decimal...'>
+            <button id="btnFromDecimal" class='btn'><i class='icon-cog'></i>Convert</button>
+            <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
+        </form> 
+        <div id='roman-result'></div>
     </div>
-    <footer>
-        <div class='container footer'>
-            <p class='pull-right'><small>v{{version}}</small></p>
-            <p>Developed by <a href='https://twitter.com/#!/rguerreiro'>@rguerreiro</a> with the sole purpose to sharpen his node.js skills.</p>
-            <p><small>Favicon taken from <a href='http://www.famfamfam.com/lab/icons/silk/'>famfamfam</a>. Hosted at <a href='http://www.heroku.com/'>Heroku</a> and running on <a href='http://expressjs.com/'>express.js</a>.</small></p>
-        </div>
-    </footer>
-    <script type='text/javascript' language='javascript'>
-        var toggle_translation = function($btn) {
-            var indicator = $btn.siblings('.ajax-indicator:first');
-            var textbox = $btn.siblings('input[type="text"]:first');
-            if (indicator.is(':visible')) {
-                indicator.hide();
-                textbox.removeAttr("disabled");
-                $btn.removeAttr("disabled");
-            } else {
-                indicator.show();
-                textbox.attr("disabled", "disabled");
-                $btn.attr("disabled", "disabled");
+    <div class='span6'>
+        <h3>From Roman numbers</h3>
+        <form class="form-horizontal">
+            <input type='text' id='roman' placeholder='to decimal...'>
+            <button id="btnToDecimal" class='btn'><i class='icon-cog'></i>Convert</button>
+            <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
+        </form>
+        <div id='decimal-result'></div>
+    </div>
+</div>
+{{#script}}
+<script type='text/javascript' language='javascript'>
+    var toggle_translation = function($btn) {
+        var indicator = $btn.siblings('.ajax-indicator:first');
+        var textbox = $btn.siblings('input[type="text"]:first');
+        if (indicator.is(':visible')) {
+            indicator.hide();
+            textbox.removeAttr("disabled");
+            $btn.removeAttr("disabled");
+        } else {
+            indicator.show();
+            textbox.attr("disabled", "disabled");
+            $btn.attr("disabled", "disabled");
+        }
+    };
+    var execute = function(url, $btn, $input, $result) {
+        var value = $input.val();
+        $result.html('').removeAttr('class');
+        if(!value) return false;
+        
+        toggle_translation($btn);
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: { number: value },
+            error: function (xhr, status, error) {
+                $result.addClass("alert alert-error");
+                $result.html('<strong>Error!</strong> ' + xhr.responseText + '.');
+                toggle_translation($btn);
+            },
+            success: function (data, status, xhr) {
+                toggle_translation($btn);
+                $result.html('<strong>' + value + '</strong> = ' + data).addClass("alert alert-success");
+                $input.val('');
             }
-        };
-        var execute = function(url, $btn, $input, $result) {
-            var value = $input.val();
-            $result.html('').removeAttr('class');
-            if(!value) return false;
-            
-            toggle_translation($btn);
-            $.ajax({
-                type: 'POST',
-                url: url,
-                data: { number: value },
-                error: function (xhr, status, error) {
-                    $result.addClass("alert alert-error");
-                    $result.html('<strong>Error!</strong> ' + xhr.responseText + '.');
-                    toggle_translation($btn);
-                },
-                success: function (data, status, xhr) {
-                    toggle_translation($btn);
-                    $result.html('<strong>' + value + '</strong> = ' + data).addClass("alert alert-success");
-                    $input.val('');
-                }
-            });
-        };
-        $(function() {
-            $('#btnFromDecimal').on('click', function() {
-                execute('fromDecimal', $(this), $('#decimal'), $('#roman-result'));
-                return false;
-            });
-            $('#btnToDecimal').on('click', function() {
-                execute('toDecimal', $(this), $('#roman'), $('#decimal-result'));
-                return false;
-            });
         });
-    </script>
-    <a href="http://github.com/rguerreiro/romantranslator"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://a248.e.akamai.net/assets.github.com/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
-</body>
-</html>
+    };
+    $(function() {
+        $('#btnFromDecimal').on('click', function() {
+            execute('fromDecimal', $(this), $('#decimal'), $('#roman-result'));
+            return false;
+        });
+        $('#btnToDecimal').on('click', function() {
+            execute('toDecimal', $(this), $('#roman'), $('#decimal-result'));
+            return false;
+        });
+    });
+</script>
+{{/script}}

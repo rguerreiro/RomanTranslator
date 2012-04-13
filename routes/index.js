@@ -1,8 +1,7 @@
-var translator = require('../lib/roman-translator.js'),
-    utils = require('../lib/utils.js');
+var translator = require('../lib/roman-translator.js');
 
 exports.index = function(req, res) {
-    res.render('index', { title: 'Roman Number Converter', version: utils.getVersion(), env: utils.getEnv() });
+    res.render('index', { title: 'Roman Number Converter' });
 };
 
 exports.throwError = function(req, res) {
