@@ -143,4 +143,11 @@ exports["invalid character at the end"] = function(test){
     test.done();
 };
 
+exports["characters in wrong position"] = function(test){
+    test.throws(function() {
+        translator.toDecimal('MMIM');
+    }, /Misplaced character 'M' in position 4/);
+    test.done();
+};
+
 base.run_test(__filename);
