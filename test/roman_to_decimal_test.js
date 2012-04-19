@@ -150,6 +150,19 @@ exports["characters in wrong position"] = function(test){
     test.done();
 };
 
+exports["IV is a valid roman number"] = function(test){
+    test.equal(translator.toDecimal('IV'), 4);
+    test.done();
+};
 
+exports["XL is a valid roman number"] = function(test){
+    test.equal(translator.toDecimal('XL'), 40);
+    test.done();
+};
+
+exports["CD is a valid roman number"] = function(test){
+    test.equal(translator.toDecimal('CD'), 400);
+    test.done();
+};
 
 base.run_test(__filename);
