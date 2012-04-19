@@ -1,4 +1,4 @@
-var translator = require('../lib/roman-translator.js');
+var translator = require('../lib/roman-converter.js');
 
 exports.index = function(req, res) {
     res.render('index', { title: 'Roman Number Converter' });

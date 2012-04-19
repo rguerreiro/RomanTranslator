@@ -1,4 +1,4 @@
-var translator = require('../lib/roman-translator.js'),
+var translator = require('../lib/roman-converter.js'),
     base = require('./common.js');
 
 exports["translator initialization"] = function(test){
