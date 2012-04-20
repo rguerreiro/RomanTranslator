@@ -2,7 +2,7 @@
     "name": "roman-converter",
     "author": "Rodrigo Guerreiro",
     "description": "Roman numbers converter",
-    "version": "0.4.5",
+    "version": "0.5.0",
     "engines": {
         "node": "0.6.14",
         "npm":  "1.1.9"

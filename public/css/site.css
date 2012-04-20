@@ -1,15 +1,17 @@
 /* sticky footer taken from http://od-eon.com/blogs/calvin/flush-footer-css-bottom-page/ */
 html, body { height: 100%; }
 
+.page-header { padding-top: 30px; }
+
 .wrapper {
     min-height: 100%;
     height: auto !important;
     height: 100%;
-    margin: 0 auto -60px;
+    margin: 0 auto -90px;
 }
 
 .footer, .push {
-    height: 50px;
+    height: 80px;
     clear: both;
 }
 

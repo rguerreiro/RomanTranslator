@@ -1,23 +1,24 @@
 <div class='row'>
     <div class='span6'>
-        <h3>To Roman numbers</h3>
+        <h3>{{#resource}}to roman{{/resource}}</h3>
         <form class='form-horizontal'>
-            <input type='text' id='decimal' placeholder='from decimal...'>
-            <button id='btnFromDecimal' class='btn'><i class='icon-cog'></i>Convert</button>
+            <input type='text' id='decimal' placeholder='{{#resource}}decimal placeholder{{/resource}}'>
+            <button id='btnFromDecimal' class='btn'><i class='icon-cog'></i>{{#resource}}convert{{/resource}}</button>
             <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
         </form> 
         <div id='roman-result'></div>
     </div>
     <div class='span6'>
-        <h3>From Roman numbers</h3>
+        <h3>{{#resource}}from roman{{/resource}}</h3>
         <form class='form-horizontal'>
-            <input type='text' id='roman' placeholder='to decimal...'>
-            <button id='btnToDecimal' class='btn'><i class='icon-cog'></i>Convert</button>
+            <input type='text' id='roman' placeholder='{{#resource}}roman placeholder{{/resource}}'>
+            <button id='btnToDecimal' class='btn'><i class='icon-cog'></i>{{#resource}}convert{{/resource}}</button>
             <img class='ajax-indicator' src='/img/ajax-loader.gif' style='display: none;'/>
         </form>
         <div id='decimal-result'></div>
     </div>
 </div>
+
 {{#script}}
 <script type='text/javascript' language='javascript'>
     var toggle_translation = function($btn) {
@@ -45,7 +46,7 @@
             data: { number: value },
             error: function (xhr, status, error) {
                 $result.addClass('alert alert-error');
-                $result.html('<strong>Error!</strong> ' + xhr.responseText + '.');
+                $result.html('<strong>{{#resource}}error{{/resource}}!</strong> ' + xhr.responseText + '.');
                 toggle_translation($btn);
             },
             success: function (data, status, xhr) {

@@ -1,12 +1,30 @@
-var express = require('express'),
-    util    = require('util'),
-    //cons    = require('consolidate'), // use this instead when express 3.x gets out
-    hogan   = require('hogan.js'),
-    adapter = require('./lib/hogan-express.js'),
-    routes  = require('./routes'),
-    utils   = require('./lib/utils.js');
+var express   = require('express'),
+    util      = require('util'),
+    //cons      = require('consolidate'), // use this instead when express 3.x gets out
+    hogan     = require('hogan.js'),
+    adapter   = require('./lib/hogan-express.js'),
+    routes    = require('./routes'),
+    languages = require('./languages'),
+    utils     = require('./lib/utils.js');
 
 var app = module.exports = express.createServer();
+
+function setCookie(req, res, next) {
+    if (typeof req.params.lang !== 'undefined' && languages.isSupported(req.params.lang)) {
+        console.log('setting language \'' + req.params.lang + '\'');
+        res.clearCookie('lang');
+        res.cookie('lang', req.params.lang, { path: '/' });
+        languages.set(req.params.lang);
+    } else if (typeof req.cookies.lang === 'undefined') {
+        console.log('setting to default language: \'' + languages.default.code +'\'');
+        res.cookie('lang', languages.default.code, { path: '/' });
+    } else {
+		console.log('setting current language to \'' + req.cookies.lang + '\'');
+		languages.set(req.cookies.lang);
+    }
+    
+    if(next) next();
+}
 
 function PageNotFoundError(message){
     this.name = 'PageNotFoundError';
@@ -56,7 +74,6 @@ app.configure('production', function(){
             console.log('error:' + err.message);
             res.render('500', {
                 status: 500,
-                title: 'Roman Number Converter', 
                 error: util.inspect(err),
                 showDetails: app.settings.showErrorDetails
             });
@@ -64,11 +81,24 @@ app.configure('production', function(){
     });
 });
 
-//app.helpers({
-//    renderScript: function(content){ return '<script type="text/javascript" language="javascript">' + content + '</script>' }
-//});
-
 app.dynamicHelpers({
+    language: function(req, res) {
+        return languages.current.code;
+    },
+    languageHtml: function(req, res) {
+        var curr_language = languages.current.code;
+        var html = '<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' + languages[curr_language].name + '<b class="caret"></b></a><ul class="dropdown-menu">';
+        
+        for(var i = 0; i < languages.supported.length; ++i){
+            var lang = languages.supported[i];
+            if(lang !== curr_language) {
+                html = html.concat('<li><a href="language/' + lang + '">' + languages[lang].name + '</a></li>');
+            }
+        }
+
+        html = html.concat('</ul></li>');
+        return html;
+    },
     env: function(req, res){
         return utils.getEnv();
     },
@@ -80,14 +110,29 @@ app.dynamicHelpers({
             res.local('script_section', content);
             return '';
         };
+    },
+    resource: function(req, res){
+        return function(resource_code) {
+            var lang = req.cookies.lang;
+            if (!lang || !languages.isSupported(lang)) lang = languages.default.code;
+            
+            console.log('resource ' + resource_code + ' for language ' + lang);
+            return languages[lang].translate(resource_code);
+        }
     }
 });
 
 // Routes
+app.get('/*', setCookie);
 app.get('/', routes.index);
 app.get('/throwError', routes.throwError);
 app.post('/toDecimal', routes.toDecimal);
 app.post('/fromDecimal', routes.fromDecimal);
+app.get('/language/:lang', function (req, res) {
+    setCookie(req, res);
+    res.redirect('/');
+});
 
 app.listen(process.env.PORT);
+
 console.log("Express server listening on port %d in %s mode", process.env.PORT, app.settings.env);

@@ -1,7 +1,7 @@
 var converter = require('../lib/roman-converter.js');
 
 exports.index = function(req, res) {
-    res.render('index', { title: 'Roman Number Converter' });
+    res.render('index');
 };
 
 exports.throwError = function(req, res) {
