@@ -13,7 +13,11 @@ en.translations = {
   'convert': 'Convert',
   'error': 'Error',
   'unexpected error': 'Something went terribly wrong',
-  'ExceededMaximumNumberOfTimes': 'The character ... \'{char}\' can only be used a maximum of {max_times} time(s)'
+  'ExceededMaximumNumberOfTimes': 'The character \'{char}\' can only be used a maximum of {max_times} time(s)',
+  'MisplacedCharacter': 'Misplaced character \'{char}\' in position {position}',
+  'CharacterInvalidPosition': 'Character \'{char}\' in position {position} isn\'t a valid one',
+  'ExceededMaximumValue': 'Regular roman numbers can only go to a maximum of MMMDCCCLXXXVIII (3888)',
+  'NotImplemented': 'To be implemented'
 };
 
 module.exports = en;

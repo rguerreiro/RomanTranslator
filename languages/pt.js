@@ -13,7 +13,11 @@ pt.translations = {
   'convert': 'Converter',
   'error': 'Erro',
   'unexpected error': 'Aconteceu algo de muito errado',
-  'ExceededMaximumNumberOfTimes': 'O caracter \'{char}\' só pode ser usado até um máximo de {max_times} vez(es)'
+  'ExceededMaximumNumberOfTimes': 'O caracter \'{char}\' só pode ser usado até um máximo de {max_times} vez(es)',
+  'MisplacedCharacter': 'O caracter \'{char}\' está mal colocado na posição {position}',
+  'CharacterInvalidPosition': 'O caracter \'{char}\' na posição {position} não é válido',
+  'ExceededMaximumValue': 'Os números romanos só podem ir ate um máximo de MMMDCCCLXXXVIII (3888)',
+  'NotImplemented': 'Não está implementado'
 };
 
 module.exports = pt;
