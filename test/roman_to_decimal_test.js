@@ -53,7 +53,11 @@ exports["max allowed M"] = function(test) {
 exports["more than max allowed M"] = function(test) {
     test.throws(function() {
         converter.toDecimal('MMMM');
-    }, /The character 'M' can only be used a maximum of 3 time\(s\)/);
+    }, ///The character 'M' can only be used a maximum of 3 time\(s\)/);
+    function(err) {
+    	if (err.arguments.char === 'M')
+      		return true;
+    });
     test.done();
 };
 

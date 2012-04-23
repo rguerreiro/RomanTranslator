@@ -12,7 +12,8 @@ en.translations = {
   'from roman': 'From Roman numbers',
   'convert': 'Convert',
   'error': 'Error',
-  'unexpected error': 'Something went terribly wrong'
+  'unexpected error': 'Something went terribly wrong',
+  'ExceededMaximumNumberOfTimes': 'The character ... \'{char}\' can only be used a maximum of {max_times} time(s)'
 };
 
 module.exports = en;

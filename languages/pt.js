@@ -12,7 +12,8 @@ pt.translations = {
   'from roman': 'De números Romanos',
   'convert': 'Converter',
   'error': 'Erro',
-  'unexpected error': 'Aconteceu algo de muito errado'
+  'unexpected error': 'Aconteceu algo de muito errado',
+  'ExceededMaximumNumberOfTimes': 'O caracter \'{char}\' só pode ser usado até um máximo de {max_times} vez(es)'
 };
 
 module.exports = pt;

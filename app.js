@@ -9,18 +9,14 @@ var express   = require('express'),
 
 var app = module.exports = express.createServer();
 
-function setCookie(req, res, next) {
+function setLanguage(req, res, next) {
     if (typeof req.params.lang !== 'undefined' && languages.isSupported(req.params.lang)) {
         console.log('setting language \'' + req.params.lang + '\'');
         res.clearCookie('lang');
         res.cookie('lang', req.params.lang, { path: '/' });
-        languages.set(req.params.lang);
     } else if (typeof req.cookies.lang === 'undefined') {
         console.log('setting to default language: \'' + languages.default.code +'\'');
         res.cookie('lang', languages.default.code, { path: '/' });
-    } else {
-		console.log('setting current language to \'' + req.cookies.lang + '\'');
-		languages.set(req.cookies.lang);
     }
     
     if(next) next();
@@ -68,8 +64,17 @@ app.configure('production', function(){
             console.log('got a 404');
             res.redirect('/');
         } else if (req.isXMLHttpRequest) {
-            console.log('error in ajax req:' + err.message);
-            res.send(err.message, 500);
+        	var lang = req.cookies.lang;
+            if (!lang || !languages.isSupported(lang)) lang = languages.default.code;
+            console.log('resource ' + err.name + ' for language ' + lang);
+            var errorTranslation = languages[lang].translate(err.name, err.arguments);
+            if(errorTranslation) {
+            	console.log('error in ajax req:' + errorTranslation);
+            	res.send(errorTranslation, 500);
+            } else {
+            	console.log('error in ajax req:' + err.message);
+            	res.send(err.message, 500);
+            }
         } else {
             console.log('error:' + err.message);
             res.render('500', {
@@ -83,10 +88,15 @@ app.configure('production', function(){
 
 app.dynamicHelpers({
     language: function(req, res) {
-        return languages.current.code;
+        var curr_language = req.cookies.lang;
+        if (!curr_language || !languages.isSupported(curr_language)) curr_language = languages.default.code;
+        
+        return curr_language;
     },
     languageHtml: function(req, res) {
-        var curr_language = languages.current.code;
+        var curr_language = req.cookies.lang;
+        if (!curr_language || !languages.isSupported(curr_language)) curr_language = languages.default.code;
+        
         var html = '<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' + languages[curr_language].name + '<b class="caret"></b></a><ul class="dropdown-menu">';
         
         for(var i = 0; i < languages.supported.length; ++i){
@@ -107,7 +117,16 @@ app.dynamicHelpers({
     },
     script: function(req, res){
         return function(content) { 
-            res.local('script_section', content);
+        	var template = hogan.compile(content);
+            res.local('script_section', template.render({ 
+            	resource: function(resource_code) {
+	            	var lang = req.cookies.lang;
+		            if (!lang || !languages.isSupported(lang)) lang = languages.default.code;
+		            
+		            console.log('resource ' + resource_code + ' for language ' + lang);
+		            return languages[lang].translate(resource_code);
+            	} 
+            }));
             return '';
         };
     },
@@ -123,13 +142,13 @@ app.dynamicHelpers({
 });
 
 // Routes
-app.get('/*', setCookie);
+app.get('/*', setLanguage);
 app.get('/', routes.index);
 app.get('/throwError', routes.throwError);
 app.post('/toDecimal', routes.toDecimal);
 app.post('/fromDecimal', routes.fromDecimal);
 app.get('/language/:lang', function (req, res) {
-    setCookie(req, res);
+    setLanguage(req, res);
     res.redirect('/');
 });
 
