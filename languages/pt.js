@@ -17,7 +17,8 @@ pt.translations = {
   'MisplacedCharacter': 'O caracter \'{char}\' está mal colocado na posição {position}',
   'CharacterInvalidPosition': 'O caracter \'{char}\' na posição {position} não é válido',
   'ExceededMaximumValue': 'Os números romanos só podem ir ate um máximo de MMMDCCCLXXXVIII (3888)',
-  'NotImplemented': 'Não está implementado'
+  'NotImplemented': 'Não está implementado',
+  'qr code title': 'Experimente este site no seu telemóvel'
 };
 
 module.exports = pt;

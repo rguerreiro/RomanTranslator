@@ -17,7 +17,8 @@ en.translations = {
   'MisplacedCharacter': 'Misplaced character \'{char}\' in position {position}',
   'CharacterInvalidPosition': 'Character \'{char}\' in position {position} isn\'t a valid one',
   'ExceededMaximumValue': 'Regular roman numbers can only go to a maximum of MMMDCCCLXXXVIII (3888)',
-  'NotImplemented': 'To be implemented'
+  'NotImplemented': 'To be implemented',
+  'qr code title': 'Try this site on your phone'
 };
 
 module.exports = en;
