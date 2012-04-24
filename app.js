@@ -14,6 +14,8 @@ function setLanguage(req, res, next) {
         console.log('setting language \'' + req.params.lang + '\'');
         res.clearCookie('lang');
         res.cookie('lang', req.params.lang, { path: '/' });
+        req.cookies.lang = req.params.lang;
+        hogan.cache = {};
     } else if (typeof req.cookies.lang === 'undefined') {
         console.log('setting to default language: \'' + languages.default.code +'\'');
         res.cookie('lang', languages.default.code, { path: '/' });
@@ -102,7 +104,7 @@ app.dynamicHelpers({
         for(var i = 0; i < languages.supported.length; ++i){
             var lang = languages.supported[i];
             if(lang !== curr_language) {
-                html = html.concat('<li><a href="language/' + lang + '">' + languages[lang].name + '</a></li>');
+                html = html.concat('<li><a href="/language/' + lang + '">' + languages[lang].name + '</a></li>');
             }
         }
 
@@ -148,8 +150,9 @@ app.get('/throwError', routes.throwError);
 app.post('/toDecimal', routes.toDecimal);
 app.post('/fromDecimal', routes.fromDecimal);
 app.get('/language/:lang', function (req, res) {
+	console.log('going to change language');
     setLanguage(req, res);
-    res.redirect('/');
+    res.redirect('home');
 });
 
 app.listen(process.env.PORT);

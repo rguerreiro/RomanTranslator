@@ -1,6 +1,10 @@
 var converter = require('../lib/roman-converter.js');
 
 exports.index = function(req, res) {
+	console.log('rendering index view');
+	
+	// http://stackoverflow.com/questions/511144/how-to-instruct-web-browsers-not-to-cache-pages
+	res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
     res.render('index');
 };
 
