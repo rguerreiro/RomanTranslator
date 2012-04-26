@@ -49,14 +49,7 @@ app.configure(function(){
     app.use(express.static(__dirname + '/public'));
     
     app.register('html', adapter.init(hogan)); // using this while express 3.x isn't released
-});
-
-// Error handling
-app.configure('development', function(){
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
+    
     app.use(function(req, res, next) {
         console.log('reached PageNotFoundError use');
         next(new PageNotFoundError())
@@ -70,7 +63,7 @@ app.configure('production', function(){
             if (!lang || !languages.isSupported(lang)) lang = languages.default.code;
             console.log('resource ' + err.name + ' for language ' + lang);
             var errorTranslation = languages[lang].translate(err.name, err.arguments);
-            if(errorTranslation) {
+            if(errorTranslation && errorTranslation !== err.name) {
             	console.log('error in ajax req:' + errorTranslation);
             	res.send(errorTranslation, 500);
             } else {

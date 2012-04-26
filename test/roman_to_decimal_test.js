@@ -20,6 +20,13 @@ exports["null roman number"] = function(test) {
     test.done();
 };
 
+exports["nothing roman number"] = function(test) {
+    test.throws(function() {
+        converter.toDecimal();
+    }, /Empty string/);
+    test.done();
+};
+
 exports["lowest roman number"] = function(test){
     test.equal(converter.toDecimal('I'), 1);
     test.done();
@@ -53,11 +60,7 @@ exports["max allowed M"] = function(test) {
 exports["more than max allowed M"] = function(test) {
     test.throws(function() {
         converter.toDecimal('MMMM');
-    }, ///The character 'M' can only be used a maximum of 3 time\(s\)/);
-    function(err) {
-    	if (err.arguments.char === 'M')
-      		return true;
-    });
+    }, /The character 'M' can only be used a maximum of 3 time\(s\)/);
     test.done();
 };
 

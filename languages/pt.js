@@ -13,12 +13,17 @@ pt.translations = {
   'convert': 'Converter',
   'error': 'Erro',
   'unexpected error': 'Aconteceu algo de muito errado',
+  'EmptyRomanString': 'Número vazio',
   'ExceededMaximumNumberOfTimes': 'O caracter \'{char}\' só pode ser usado até um máximo de {max_times} vez(es)',
   'MisplacedCharacter': 'O caracter \'{char}\' está mal colocado na posição {position}',
   'CharacterInvalidPosition': 'O caracter \'{char}\' na posição {position} não é válido',
   'ExceededMaximumValue': 'Os números romanos só podem ir ate um máximo de MMMDCCCLXXXVIII (3888)',
   'NotImplemented': 'Não está implementado',
-  'qr code title': 'Experimente este site no seu telemóvel'
+  'qr code title': 'Experimente este site no seu telemóvel',
+  'EmptyDecimalNumber': 'Não foi enviado nenhum número',
+  'NotNumber': '{number} não é um número válido',
+  'NotPositive': 'Número tem de ser maior que 0',
+  'MustBeLower': 'Número tem de ser menor 3888'
 };
 
 module.exports = pt;

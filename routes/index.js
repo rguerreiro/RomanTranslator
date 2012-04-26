@@ -23,5 +23,5 @@ exports.fromDecimal = function(req, res) {
     console.log('received:' + req.body.number);
     var roman = converter.toRoman(req.body.number);
     console.log('sending:' + roman);
-    res.send(roman.toString());
+    res.send(roman);
 };
