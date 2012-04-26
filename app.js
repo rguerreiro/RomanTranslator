@@ -88,6 +88,12 @@ app.dynamicHelpers({
         
         return curr_language;
     },
+    inProduction: function(req, res) {
+    	return utils.getEnv() === 'production';
+    },
+    inDevelopment: function(req, res) {
+    	return utils.getEnv() === 'development';
+    },
     languageHtml: function(req, res) {
         var curr_language = req.cookies.lang;
         if (!curr_language || !languages.isSupported(curr_language)) curr_language = languages.default.code;
