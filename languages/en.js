@@ -23,8 +23,13 @@ en.translations = {
   'EmptyDecimalNumber': 'No number provided',
   'NotNumber': '{number} isn\'t a valid number',
   'NotPositive': 'Number must be greater than 0',
-  'MustBeLower': 'Number must be lower than 3888'
-  
+  'MustBeLower': 'Number must be lower than 3888',
+  'optimized to': 'Optimized to your',
+  'phone': 'phone',
+  'desktop': 'desktop',
+  'tv': 'tv',
+  'tablet': 'tablet',
+  'get the code': 'Get the code at <a href="http://github.com/rguerreiro/romantranslator">Github.</a>'
 };
 
 module.exports = en;

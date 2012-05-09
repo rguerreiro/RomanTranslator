@@ -1,5 +1,6 @@
 var express   = require('express'),
     util      = require('util'),
+    device    = require('express-device'),
     //cons      = require('consolidate'), // use this instead when express 3.x gets out
     hogan     = require('hogan.js'),
     adapter   = require('./lib/hogan-express.js'),
@@ -45,6 +46,7 @@ app.configure(function(){
     app.use(express.bodyParser());
     app.use(express.methodOverride());
     app.use(express.cookieParser());
+    app.use(device.capture());
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));
     
@@ -136,11 +138,20 @@ app.dynamicHelpers({
             var lang = req.cookies.lang;
             if (!lang || !languages.isSupported(lang)) lang = languages.default.code;
             
+            if(resource_code.indexOf('{{') >= 0) {
+            	console.log('resource ' + resource_code + ' is a variable');
+            	var template = hogan.compile(resource_code);
+            	resource_code = template.render({ 
+	            	device: req.device.type
+	            });
+            }
+            
             console.log('resource ' + resource_code + ' for language ' + lang);
             return languages[lang].translate(resource_code);
         }
     }
 });
+app.enableDeviceHelpers();
 
 // Routes
 app.get('/*', setLanguage);
