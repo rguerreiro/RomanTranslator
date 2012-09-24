@@ -165,6 +165,8 @@ app.get('/language/:lang', function (req, res) {
     res.redirect('home');
 });
 
-app.listen(process.env.PORT);
+var port = process.env.PORT || 3000;
 
-console.log("Express server listening on port %d in %s mode", process.env.PORT, app.settings.env);
+app.listen(port);
+
+console.log("Express server listening on port %d in %s mode", port, app.settings.env);
