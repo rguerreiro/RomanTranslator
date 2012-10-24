@@ -172,4 +172,11 @@ exports["CD is a valid roman number"] = function(test){
     test.done();
 };
 
+exports["C is misplaced"] = function(test){
+    test.throws(function(){
+        converter.toDecimal("CCLC");
+    }, /Misplaced character 'C' in position 4/);
+    test.done();
+};
+
 base.run_test(__filename);
