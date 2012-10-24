@@ -1,14 +1,14 @@
 var express   = require('express'),
     util      = require('util'),
     device    = require('express-device'),
-    //cons      = require('consolidate'), // use this instead when express 3.x gets out
+    cons      = require('consolidate'),
     hogan     = require('hogan.js'),
-    adapter   = require('./lib/hogan-express.js'),
+    partials  = require('express-partials'),
     routes    = require('./routes'),
     languages = require('./languages'),
-    utils     = require('./lib/utils.js');
+    helpers   = require('./helpers.js');
 
-var app = module.exports = express.createServer();
+var app = express();
 
 function setLanguage(req, res, next) {
     if (typeof req.params.lang !== 'undefined' && languages.isSupported(req.params.lang)) {
@@ -35,8 +35,7 @@ PageNotFoundError.prototype.__proto__ = Error.prototype;
 
 // Configuration
 app.configure(function(){
-    // assign the swig engine to .html files
-    //app.engine('html', cons.hogan); // use this instead when express 3.x gets out
+    app.engine('html', cons.hogan);
     
     // assign .html as the default extension
     app.set('view engine', 'html');
@@ -47,16 +46,20 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser());
     app.use(device.capture());
+    app.use(partials());
+    
+    app.enableDeviceHelpers();
+    app.setCommonHelpers();
+    
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));
-    
-    app.register('html', adapter.init(hogan)); // using this while express 3.x isn't released
     
     app.use(function(req, res, next) {
         console.log('reached PageNotFoundError use');
         next(new PageNotFoundError())
     });
-    app.error(function(err, req, res, next) {
+    
+    app.use(function(err, req, res, next) {
         if (err instanceof PageNotFoundError) {
             console.log('got a 404');
             res.redirect('/');
@@ -83,76 +86,6 @@ app.configure(function(){
     });
 });
 
-app.dynamicHelpers({
-    language: function(req, res) {
-        var curr_language = req.cookies.lang;
-        if (!curr_language || !languages.isSupported(curr_language)) curr_language = languages.default.code;
-        
-        return curr_language;
-    },
-    inProduction: function(req, res) {
-    	return utils.getEnv() === 'production';
-    },
-    inDevelopment: function(req, res) {
-    	return utils.getEnv() === 'development';
-    },
-    languageHtml: function(req, res) {
-        var curr_language = req.cookies.lang;
-        if (!curr_language || !languages.isSupported(curr_language)) curr_language = languages.default.code;
-        
-        var html = '<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">' + languages[curr_language].name + '<b class="caret"></b></a><ul class="dropdown-menu">';
-        
-        for(var i = 0; i < languages.supported.length; ++i){
-            var lang = languages.supported[i];
-            if(lang !== curr_language) {
-                html = html.concat('<li><a href="/language/' + lang + '">' + languages[lang].name + '</a></li>');
-            }
-        }
-
-        html = html.concat('</ul></li>');
-        return html;
-    },
-    env: function(req, res){
-        return utils.getEnv();
-    },
-    version: function(req, res){
-        return utils.getVersion();
-    },
-    script: function(req, res){
-        return function(content) { 
-        	var template = hogan.compile(content);
-            res.local('script_section', template.render({ 
-            	resource: function(resource_code) {
-	            	var lang = req.cookies.lang;
-		            if (!lang || !languages.isSupported(lang)) lang = languages.default.code;
-		            
-		            console.log('resource ' + resource_code + ' for language ' + lang);
-		            return languages[lang].translate(resource_code);
-            	} 
-            }));
-            return '';
-        };
-    },
-    resource: function(req, res){
-        return function(resource_code) {
-            var lang = req.cookies.lang;
-            if (!lang || !languages.isSupported(lang)) lang = languages.default.code;
-            
-            if(resource_code.indexOf('{{') >= 0) {
-            	console.log('resource ' + resource_code + ' is a variable');
-            	var template = hogan.compile(resource_code);
-            	resource_code = template.render({ 
-	            	device: req.device.type
-	            });
-            }
-            
-            console.log('resource ' + resource_code + ' for language ' + lang);
-            return languages[lang].translate(resource_code);
-        }
-    }
-});
-app.enableDeviceHelpers();
-
 // Routes
 app.get('/*', setLanguage);
 app.get('/', routes.index);
@@ -165,6 +98,8 @@ app.get('/language/:lang', function (req, res) {
     res.redirect('home');
 });
 
-app.listen(process.env.PORT);
+var port = process.env.PORT || 3000;
 
-console.log("Express server listening on port %d in %s mode", process.env.PORT, app.settings.env);
+app.listen(port);
+
+console.log("Express server listening on port %d in %s mode", port, app.settings.env);
