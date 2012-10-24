@@ -99,7 +99,13 @@ app.get('/language/:lang', function (req, res) {
 });
 
 var port = process.env.PORT || 3000;
+<<<<<<< HEAD
 
 app.listen(port);
 
+=======
+
+app.listen(port);
+
+>>>>>>> a3ae627bad2dc2c5c9bf236e5a4041e2bddf1d78
 console.log("Express server listening on port %d in %s mode", port, app.settings.env);
