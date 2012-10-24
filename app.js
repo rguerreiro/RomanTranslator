@@ -63,7 +63,7 @@ app.configure(function(){
         if (err instanceof PageNotFoundError) {
             console.log('got a 404');
             res.redirect('/');
-        } else if (req.isXMLHttpRequest) {
+        } else if (req.xhr) {
         	var lang = req.cookies.lang;
             if (!lang || !languages.isSupported(lang)) lang = languages.default.code;
             console.log('resource ' + err.name + ' for language ' + lang);
@@ -99,13 +99,7 @@ app.get('/language/:lang', function (req, res) {
 });
 
 var port = process.env.PORT || 3000;
-<<<<<<< HEAD
 
 app.listen(port);
 
-=======
-
-app.listen(port);
-
->>>>>>> a3ae627bad2dc2c5c9bf236e5a4041e2bddf1d78
 console.log("Express server listening on port %d in %s mode", port, app.settings.env);
