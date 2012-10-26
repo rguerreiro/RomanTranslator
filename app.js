@@ -3,7 +3,6 @@ var express   = require('express'),
     device    = require('express-device'),
     cons      = require('consolidate'),
     hogan     = require('hogan.js'),
-    partials  = require('express-partials'),
     routes    = require('./routes'),
     languages = require('./languages'),
     helpers   = require('./helpers.js');
@@ -46,10 +45,10 @@ app.configure(function(){
     app.use(express.methodOverride());
     app.use(express.cookieParser());
     app.use(device.capture());
-    app.use(partials());
     
-    app.enableDeviceHelpers();
+    app.enableViewRouting();
     app.setCommonHelpers();
+    app.enableDeviceHelpers();
     
     app.use(app.router);
     app.use(express.static(__dirname + '/public'));

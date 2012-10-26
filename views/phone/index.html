@@ -1,0 +1,66 @@
+<div class="ui-grid-a">
+    <div class="ui-block-a">
+        <input type='text' id='decimal' data-mini="true" placeholder='{{#resource}}decimal placeholder{{/resource}}'>
+    </div>
+	<div class="ui-block-b">
+        <button id='btnFromDecimal' data-icon="gear" data-mini="true" data-inline="true" data-corners="false">{{#resource}}convert{{/resource}}</button>
+    </div>
+</div>
+<br />
+<div class="ui-grid-a">
+    <div class="ui-block-a">
+        <input type='text' id='roman' data-mini="true" placeholder='{{#resource}}roman placeholder{{/resource}}'>
+    </div>
+    <div class="ui-block-b">
+        <button id='btnToDecimal' data-icon="gear" data-mini="true" data-inline="true" data-corners="false">{{#resource}}convert{{/resource}}</button>
+    </div>
+</div>
+<br />
+<div class="ui-grid-a" id='result'></div>
+
+{{#script}}
+<script type='text/javascript' language='javascript'>
+    var toggle_translation = function($btn, $input) {
+        if ($btn.hasClass('ui-disabled')) {
+            $input.removeAttr('disabled');
+            $btn.removeClass('ui-disabled');
+        } else {
+            $input.attr('disabled', 'disabled');
+            $btn.addClass('ui-disabled');
+        }
+    };
+    var execute = function(url, $btn, $input, $result) {
+        var value = $input.val();
+        $result.html('');
+        if(!value) return false;
+        
+        toggle_translation($btn, $input);
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: { number: value },
+            beforeSend: function() { $.mobile.loading('show'); },
+            complete: function() { $.mobile.loading('hide'); },
+            error: function (xhr, status, error) {
+                $result.html('<strong>{{#resource}}error{{/resource}}!</strong> ' + xhr.responseText + '.');
+                toggle_translation($btn, $input);
+            },
+            success: function (data, status, xhr) {
+                toggle_translation($btn, $input);
+                $result.html('<strong>' + value + '</strong> = ' + data);
+                $input.val('');
+            }
+        });
+    };
+    $(function() {
+        $('#btnFromDecimal').on('click', function() {
+            execute('fromDecimal', $(this), $('#decimal'), $('#result'));
+            return false;
+        });
+        $('#btnToDecimal').on('click', function() {
+            execute('toDecimal', $(this), $('#roman'), $('#result'));
+            return false;
+        });
+    });
+</script>
+{{/script}}

@@ -13,7 +13,7 @@
         "consolidate": "0.4.0",
         "hogan.js": "2.0.0",
         "lingo": "0.0.4",
-        "express-device": "0.2.2",
-        "express-partials": "*"
+        "express-partials": "git://github.com/publicclass/express-partials.git#e7829e84c88770fc5660a30939895e4a5b031ba1",
+        "express-device": "0.3.0"
     }
 }

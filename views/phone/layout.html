@@ -1,0 +1,70 @@
+<!DOCTYPE html> 
+<html> 
+<head> 
+    <title>{{#resource}}site title{{/resource}}</title>
+	<meta name='description' content='{{#resource}}site description{{/resource}}' />
+    <meta name='author' content='Rodrigo Guerreiro' />
+    <meta name='keywords' content='roman, decimal, number, numeração romana, node.js, express, github, hogan, localization, demo, nodeunit, cloud9, heroku, twitter bootstrap, responsive design, javascript, jquery, jquery mobile' />
+    <meta name='language' content='en,pt' />
+    <meta name='viewport' content='width=device-width, initial-scale=1.0' />
+    
+	<link type='text/css' rel='stylesheet' href='/css/jquery.mobile.css' />
+    
+	<script type='text/javascript' src='/js/jquery.min.js'></script>
+	<script type='text/javascript' src='/js/jquery.mobile.min.js'></script>
+    
+    <!-- Le fav and touch icons -->
+    <link rel='shortcut icon' href='/favicon.ico'>
+    <!-- {{env}} -->
+    
+    {{#inProduction}}
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+	  _gaq.push(['_setAccount', 'UA-31209935-1']);
+	  _gaq.push(['_trackPageview']);
+	
+	  (function() {
+	    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	  })();
+	</script>
+	{{/inProduction}}
+</head> 
+
+<body> 
+    <div data-role="page">
+        <div data-role="header" data-position="fixed">
+    		<h1>{{#resource}}site title{{/resource}}</h1>
+            <h4>{{#resource}}site description{{/resource}}</h4>
+            <select class="ui-btn-right" id="languages">
+                {{#supportedLanguages}}
+                    {{#current}}
+                        <option value="{{lang}}" selected>{{name}}</option>
+                    {{/current}}
+                    {{^current}}
+                        <option value="{{lang}}">{{name}}</option>
+                    {{/current}}
+                {{/supportedLanguages}}
+            </select>
+    	</div>
+    
+    	<div data-role="content">	
+    		{{{body}}}
+    	</div>
+    	
+    	<div data-role="footer" data-position="fixed">
+    		<h5>{{#resource}}developed by{{/resource}} {{#resource}}get the code{{/resource}}</h5>
+            <h6>{{#resource}}references{{/resource}} v{{version}} {{#resource}}optimized to{{/resource}} {{#resource}}{{device}}{{/resource}}.</h6>
+    	</div>
+    </div>
+    <script type='text/javascript' language='javascript'>
+        $(function() {
+            $("#languages").on("change", function() {
+                location.href = "/language/" + $(this).val();
+            });
+        });
+    </script>
+    {{{script_section}}}
+</body>
+</html>

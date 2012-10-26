@@ -32,6 +32,25 @@ express.application.setCommonHelpers = function () {
     };
     app.use(inDevelopment);
     
+    var supportedLanguages = function (req, res, next) {
+        var myLanguages = [];
+        var curr_language = req.cookies.lang;
+        if (!curr_language || !languages.isSupported(curr_language)) curr_language = languages.default.code;
+        
+        for(var i = 0; i < languages.supported.length; ++i){
+            var lang = languages.supported[i];
+            if(lang !== curr_language) {
+                myLanguages.push({ lang: lang, name: languages[lang].name, current: false });
+            } else {
+                myLanguages.push({ lang: lang, name: languages[lang].name, current: true });
+            }
+        }
+        
+        res.locals.supportedLanguages = myLanguages;
+        if (next) next();
+    };
+    app.use(supportedLanguages);
+    
     var languageHtml = function (req, res, next) {
         var curr_language = req.cookies.lang;
         if (!curr_language || !languages.isSupported(curr_language)) curr_language = languages.default.code;
